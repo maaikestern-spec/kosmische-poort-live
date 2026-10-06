@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Shaddai - Kosmisch Controlecentrum</title>
+    <style>
+        body { 
+            background-color: #050508; 
+            color: #00ffcc; 
+            font-family: 'Courier New', monospace; 
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+            pointer-events: none;
+        }
+        .container { 
+            position: relative;
+            z-index: 2;
+            max-width: 650px; 
+            width: 100%;
+            background: rgba(10, 10, 15, 0.9); 
+            padding: 35px; 
+            border: 2px solid #00ffcc; 
+            border-radius: 12px; 
+            box-shadow: 0 0 30px rgba(0, 255, 204, 0.25), inset 0 0 15px rgba(0, 255, 204, 0.1);
+        }
+        h1 { 
+            font-size: 22px; 
+            text-transform: uppercase; 
+            border-bottom: 2px solid #00ffcc; 
+            padding-bottom: 15px; 
+            text-align: center; 
+            margin-top: 0; 
+            letter-spacing: 2px;
+            color: #ffffff;
+            text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+        }
+        p.intro {
+            font-size: 13px;
+            color: #a0aec0;
+            text-align: center;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        h2 { 
+            font-size: 14px; 
+            margin-top: 30px; 
+            color: #ffffff; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-left: 3px solid #00ffcc; 
+            padding-left: 10px; 
+        }
+        .btn-container { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
+            margin: 25px 0; 
+        }
+        .btn { 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(15, 15, 25, 0.8); 
+            border: 1px solid #00ffcc; 
+            color: #00ffcc; 
+            padding: 16px; 
+            text-align: center; 
+            text-decoration: none; 
+            font-weight: bold; 
+            border-radius: 6px; 
+            font-size: 13px; 
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+        }
+        .btn:hover { 
+            background: #00ffcc; 
+            color: #000000; 
+            box-shadow: 0 0 20px #00ffcc; 
+            transform: translateY(-2px);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .card {
+            background: rgba(20, 20, 30, 0.6);
+            border: 1px solid rgba(0, 255, 204, 0.2);
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 12px;
+            line-height: 1.5;
+            color: #cbd5e1;
+        }
+        .card-title { font-weight: bold; color: #ffffff; margin-bottom: 5px; }
+        .code-box { background: #111118; padding: 2px 6px; border-radius: 4px; font-size: 11px; color: #00ffff; border: 1px solid rgba(0, 255, 255, 0.4); font-weight: bold; }
+        .footer { margin-top: 35px; text-align: center; font-size: 10px; color: #4a5568; border-top: 1px solid rgba(74, 85, 104, 0.3); padding-top: 15px; }
+    </style>
+</head>
+<body>
+    <canvas id="bg-canvas"></canvas>
+    <div class="container">
+        <h1>🌌 KOSMISCH CONTROLECENTRUM</h1>
+        <p class="intro">Dit centrale dashboard fungeert als de virtuele poort naar het <strong>Kosmische Ladder Model</strong>. Kies hieronder een module om het bijbehorende station live te openen.</p>
+        
+        <div class="btn-container">
+            <button class="btn" onclick="openModule('kosmische_wereld.html')">💻 MODULE 1: De Universele Matrix (3D-Realiteit)</button>
+            <button class="btn" onclick="openModule('kosmische_tekening_multikanaal.html')">🎨 MODULE 2: De Multikanaal Beeldplotter</button>
+            <button class="btn" onclick="openModule('kosmische_taal.html')">📝 MODULE 3: De Linguïstische Woorden-Decoder</button>
+        </div>
+
+        <h2>🛠️ Systeem-Protocollen (Handleiding)</h2>
+        <div class="grid">
+            <div class="card">
+                <div class="card-title">🌐 Module 1: Dimensiestabilisatie</div>
+                Voer de basisfrequentie <span class="code-box">17625</span> of de sleutel <span class="code-box">mi-ka-el</span> in voor de pure Drie-eenheid. Gebruik code <span class="code-box">999</span> voor alien-contact.
+            </div>
+            <div class="card">
+                <div class="card-title">📐 Module 2: Vector-Beeldontvangst</div>
+                Plot live heilige geometrie uit de 8e dimensie. Schakel live tussen de zenders door de codes <span class="code-box">777</span>, <span class="code-box">888</span>, <span class="code-box">999</span> of <span class="code-box">12</span> in te voeren.
+            </div>
+            <div class="card">
+                <div class="card-title">✍️ Module 3: Linguïstische Vertaling</div>
+                Zet binaire datastromen om in leesbare taal. Voer de activeringscode <span class="code-box">777</span> in om de kosmische zinnen te decoderen.
+            </div>
+        </div>
+        <div class="footer">© 2026 El Shaddai Binaire Dimensieleer Model • i-DEPOT Geregistreerd Auteursrecht</div>
+    </div>
+    <script>
+        function openModule(bestandsnaam) {
+            const huidigeUrl = window.location.href;
+            const basisPad = huidigeUrl.substring(0, huidigeUrl.lastIndexOf('/') + 1);
+            window.location.href = basisPad + bestandsnaam;
+        }
+        const canvas = document.getElementById('bg-canvas'), ctx = canvas.getContext('2d');
+        let stars = [];
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resize); resize();
+        for (let i = 0; i < 80; i++) { stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, r: Math.random() * 1.5, d: Math.random() * 0.5 + 0.1 }); }
+        function drawBg() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); ctx.fillStyle = "rgba(0, 255, 204, 0.3)";
+            for (let i = 0; i < stars.length; i++) {
+                let s = stars[i]; ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2); ctx.fill(); s.y += s.d;
+                if (s.y > canvas.height) { s.y = 0; s.x = Math.random() * canvas.width; }
+            }
+            requestAnimationFrame(drawBg);
+        }
+        drawBg();
+    </script>
+</body>
+</html>
