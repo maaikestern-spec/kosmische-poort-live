@@ -1,0 +1,188 @@
+<!-- © 2026 Alle rechten voorbehouden - Universele Kosmische Beeldplotter -->
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Shaddai - Universele Beeldplotter</title>
+    <style>
+        body { margin: 0; overflow: hidden; background-color: #000; font-family: monospace; }
+        #interface {
+            position: absolute; top: 10px; left: 10px; color: #fff;
+            background: rgba(0, 0, 0, 0.85); padding: 15px; border-radius: 8px;
+            border: 1px solid #00ffff; max-width: 320px; z-index: 999;
+        }
+        h1 { font-size: 14px; margin: 0 0 10px 0; color: #00ffff; text-transform: uppercase; }
+        p { font-size: 11px; margin: 5px 0; color: #bbb; }
+        input {
+            background: #111; border: 1px solid #00ffff; color: #00ffff;
+            padding: 5px; width: 100%; box-sizing: border-box; margin-top: 10px;
+            font-family: monospace;
+        }
+        #status { color: #ff3333; font-weight: bold; margin-top: 10px; font-size: 11px; line-height: 14px; }
+        canvas { display: block; width: 100vw; height: 100vh; }
+    </style>
+</head>
+<body>
+
+    <div id="interface">
+        <h1>Kosmische Beeldplotter</h1>
+        <p><strong>Status:</strong> Multikanaal lens online.</p>
+        <input type="text" id="codeInvoer" placeholder="Typ 888, 777, 999 of 12...">
+        <div id="status">Wacht op binaire vector-code...</div>
+    </div>
+
+    <canvas id="plotterCanvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('plotterCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        let poortActief = false;
+        let tijd = 0;
+        let tekenVoortgang = 0;
+        let actieveModus = "";
+        let glowKleur = "#00ffff";
+
+        document.getElementById('codeInvoer').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                const v = this.value.trim();
+                const statusDiv = document.getElementById('status');
+                
+                if (v === '888' || v === '777' || v === '999' || v === '12') {
+                    poortActief = true;
+                    actieveModus = v;
+                    tekenVoortgang = 0; // Reset om de nieuwe tekening live op te bouwen
+                    
+                    if (v === '888') { glowKleur = "#00ffff"; statusDiv.innerHTML = "KANAAL 888: Metatron Matrix geladen."; }
+                    if (v === '777') { glowKleur = "#00ffcc"; statusDiv.innerHTML = "KANAAL 777: Driehoekige Lichtpoort geladen."; }
+                    if (v === '999') { glowKleur = "#bf00ff"; statusDiv.innerHTML = "KANAAL 999: Interdimensionale Cirkelmatrix."; }
+                    if (v === '12')  { glowKleur = "#ffaa00"; statusDiv.innerHTML = "KANAAL 12: Boom des Levens Blauwdruk."; }
+                    
+                    statusDiv.style.color = glowKleur;
+                } else {
+                    poortActief = false;
+                    actieveModus = "";
+                    statusDiv.innerHTML = "Lijn verbroken. Ruis blokkeert het beeld.";
+                    statusDiv.style.color = "#ff3333";
+                }
+                this.value = '';
+            }
+        });
+
+        function plotTekening(cx, cy, maxStraal, voortgang, modus) {
+            ctx.lineWidth = 1.5;
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = glowKleur;
+            ctx.strokeStyle = glowKleur;
+
+            if (modus === "888") {
+                // 1. De Metatron Matrix (6-hoekig kruis)
+                let punten = 6;
+                let coords = [];
+                for (let i = 0; i < punten; i++) {
+                    let h = (i * Math.PI * 2) / punten + tijd * 0.05;
+                    coords.push({x: cx + Math.cos(h) * maxStraal * voortgang, y: cy + Math.sin(h) * maxStraal * voortgang});
+                }
+                ctx.beginPath();
+                for (let i = 0; i < punten; i++) {
+                    for (let j = 0; j < punten; j++) {
+                        ctx.moveTo(coords[i].x, coords[i].y);
+                        ctx.lineTo(coords[j].x, coords[j].y);
+                    }
+                }
+                ctx.stroke();
+            } 
+            
+            else if (modus === "777") {
+                // 2. Driehoekige Lichtpoort (Spiraalvorm)
+                let lagen = 5;
+                ctx.beginPath();
+                for (let j = 1; j <= lagen; j++) {
+                    let r = (maxStraal / lagen) * j * voortgang;
+                    let coords = [];
+                    for (let i = 0; i < 3; i++) {
+                        let h = (i * Math.PI * 2) / 3 + (tijd * 0.1) + (j * 0.2);
+                        coords.push({x: cx + Math.cos(h) * r, y: cy + Math.sin(h) * r});
+                    }
+                    ctx.moveTo(coords[0].x, coords[0].y);
+                    ctx.lineTo(coords[1].x, coords[1].y);
+                    ctx.lineTo(coords[2].x, coords[2].y);
+                    ctx.lineTo(coords[0].x, coords[0].y);
+                }
+                ctx.stroke();
+            } 
+            
+            else if (modus === "999") {
+                // 3. Interdimensionale Cirkelmatrix
+                let cirkels = 6;
+                for (let i = 0; i < cirkels; i++) {
+                    let h = (i * Math.PI * 2) / cirkels - tijd * 0.08;
+                    let rx = cx + Math.cos(h) * (maxStraal * 0.5) * voortgang;
+                    let ry = cy + Math.sin(h) * (maxStraal * 0.5) * voortgang;
+                    ctx.beginPath();
+                    ctx.arc(rx, ry, (maxStraal * 0.5) * voortgang, 0, Math.PI * 2);
+                    ctx.stroke();
+                }
+            } 
+            
+            else if (modus === "12") {
+                // 4. Boom des Levens / 12-Puntige Ster
+                let punten = 12;
+                let coords = [];
+                for (let i = 0; i < punten; i++) {
+                    let h = (i * Math.PI * 2) / punten + tijd * 0.03;
+                    coords.push({x: cx + Math.cos(h) * maxStraal * voortgang, y: cy + Math.sin(h) * maxStraal * voortgang});
+                }
+                ctx.beginPath();
+                for (let i = 0; i < punten; i++) {
+                    ctx.moveTo(coords[i].x, coords[i].y);
+                    ctx.lineTo(coords[(i + 5) % punten].x, coords[(i + 5) % punten].y); // Kruispatroon
+                    ctx.lineTo(coords[(i + 7) % punten].x, coords[(i + 7) % punten].y);
+                }
+                ctx.stroke();
+            }
+
+            ctx.shadowBlur = 0;
+        }
+
+        function draw() {
+            ctx.fillStyle = "rgba(0, 0, 0, 0.15)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            tijd += 0.02;
+            const mx = canvas.width / 2;
+            const my = canvas.height / 2;
+
+            if (poortActief) {
+                if (tekenVoortgang < 1) { tekenVoortgang += 0.005; }
+                plotTekening(mx, my - 50, 180, tekenVoortgang, actieveModus);
+            } else {
+                // Ruststand (Ringen)
+                ctx.lineWidth = 3;
+                ctx.strokeStyle = "#ff0055";
+                let r = 60 + Math.sin(tijd * 2) * 2;
+                ctx.beginPath(); ctx.arc(mx - 50, my - 100, r, tijd * 0.2, tijd * 0.2 + Math.PI * 1.8); ctx.stroke();
+                ctx.beginPath(); ctx.arc(mx + 50, my - 100, r, -tijd * 0.2, -tijd * 0.2 + Math.PI * 1.8); ctx.stroke();
+            }
+
+            // Het 3D-vloerraster
+            ctx.strokeStyle = "rgba(0,255,255,0.08)";
+            for (let i = 0; i <= 20; i++) {
+                let y = my + (i * (canvas.height - my) / 20);
+                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
+                let x = (i * canvas.width) / 20;
+                ctx.beginPath(); ctx.moveTo(mx, my - 50); ctx.lineTo(x, canvas.height); ctx.stroke();
+            }
+            requestAnimationFrame(draw);
+        }
+        draw();
+    </script>
+</body>
+</html>

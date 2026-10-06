@@ -1,0 +1,141 @@
+<!-- © 2026 Alle rechten voorbehouden - Kosmische Decoder Model -->
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Shaddai - Kosmische Decoder</title>
+    <style>
+        body { margin: 0; overflow: hidden; background-color: #000; font-family: monospace; }
+        #interface {
+            position: absolute; top: 10px; left: 10px; color: #fff;
+            background: rgba(0, 0, 0, 0.85); padding: 15px; border-radius: 8px;
+            border: 1px solid #00ffff; max-width: 320px; z-index: 999;
+        }
+        h1 { font-size: 14px; margin: 0 0 10px 0; color: #00ffff; text-transform: uppercase; }
+        p { font-size: 11px; margin: 5px 0; color: #bbb; }
+        input {
+            background: #111; border: 1px solid #00ffff; color: #00ffff;
+            padding: 5px; width: 100%; box-sizing: border-box; margin-top: 10px;
+            font-family: monospace;
+        }
+        #status { color: #ff3333; font-weight: bold; margin-top: 10px; font-size: 11px; line-height: 14px; }
+        #woordOntvanger {
+            position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%);
+            color: #00ffff; font-size: 24px; text-shadow: 0 0 10px #00ffff;
+            font-weight: bold; text-align: center; width: 80%; pointer-events: none;
+        }
+        canvas { display: block; width: 100vw; height: 100vh; }
+    </style>
+</head>
+<body>
+
+    <div id="interface">
+        <h1>Kosmische Decoder</h1>
+        <p><strong>Status:</strong> Linguïstische lens online.</p>
+        <input type="text" id="codeInvoer" placeholder="Typ 777 voor taalontvangst...">
+        <div id="status">Wacht op binaire woord-activatie...</div>
+    </div>
+
+    <div id="woordOntvanger"></div>
+
+    <canvas id="telescoopCanvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('telescoopCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        let poortActief = false;
+        let tijd = 0;
+        let tekstTimer = 0;
+        let huidigWoordIndex = 0;
+
+        // De kosmische woordenbibliotheek die live wordt gedecodeerd uit de 8e dimensie
+        const hemelseWoorden = [
+            "DE BRON SPREEKT",
+            "EL SHADDAI",
+            "CHAOS GENEUTRALISEERD",
+            "DE 3D-LADDER STAAT VAST",
+            "MI-KA-EL",
+            "BINAIRE HARMONIE GEVONDEN",
+            "DE DEUROPENING IS OPEN",
+            "KOSMISCHE ORDE HERSTELD"
+        ];
+
+        document.getElementById('codeInvoer').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                const v = this.value.trim();
+                const statusDiv = document.getElementById('status');
+                const weergave = document.getElementById('woordOntvanger');
+                
+                if (v === '777' || v === '888') {
+                    poortActief = true;
+                    huidigWoordIndex = 0;
+                    tekstTimer = 0;
+                    statusDiv.innerHTML = "TAALONTVANGST ACTIEF:<br>Binaire signalen worden omgezet naar letters.";
+                    statusDiv.style.color = "#00ffff";
+                    weergave.innerHTML = hemelseWoorden[0];
+                } else {
+                    poortActief = false;
+                    statusDiv.innerHTML = "Lijn verbroken. Ruis blokkeert de taal.";
+                    statusDiv.style.color = "#ff3333";
+                    weergave.innerHTML = "";
+                }
+                this.value = '';
+            }
+        });
+
+        function draw() {
+            ctx.fillStyle = "rgba(0,0,0,0.15)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            tijd += 0.03;
+            const mx = canvas.width / 2;
+            const my = canvas.height / 2;
+
+            if (poortActief) {
+                // Woorden live laten roteren/wisselen op basis van de trilling
+                tekstTimer += 1;
+                if (tekstTimer % 120 === 0) { // Elke 4 seconden een nieuw woord decoderen
+                    huidigWoordIndex = (huidigWoordIndex + 1) % hemelseWoorden.length;
+                    document.getElementById('woordOntvanger').innerHTML = hemelseWoorden[huidigWoordIndex];
+                }
+
+                // Visuele weergave van de lettersignalen (lichtgolven van taal)
+                for (let i = 0; i < 6; i++) {
+                    ctx.strokeStyle = "rgba(0, 255, 255, 0.3)";
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    let s = 120 + Math.sin(tijd + i) * 30;
+                    ctx.arc(mx, my - 100, s, tijd + i, tijd + i + Math.PI * 1);
+                    ctx.stroke();
+                }
+            } else {
+                // Ruststand (Ringen)
+                ctx.lineWidth = 3;
+                ctx.strokeStyle = "#ff0055";
+                let r = 60 + Math.sin(tijd * 2) * 2;
+                ctx.beginPath(); ctx.arc(mx - 50, my - 100, r, tijd * 0.2, tijd * 0.2 + Math.PI * 1.8); ctx.stroke();
+                ctx.beginPath(); ctx.arc(mx + 50, my - 100, r, -tijd * 0.2, -tijd * 0.2 + Math.PI * 1.8); ctx.stroke();
+            }
+
+            // Het 3D-vloerraster
+            ctx.strokeStyle = "rgba(0,255,255,0.08)";
+            for (let i = 0; i <= 20; i++) {
+                let y = my + (i * (canvas.height - my) / 20);
+                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
+                let x = (i * canvas.width) / 20;
+                ctx.beginPath(); ctx.moveTo(mx, my - 50); ctx.lineTo(x, canvas.height); ctx.stroke();
+            }
+            requestAnimationFrame(draw);
+        }
+        draw();
+    </script>
+</body>
+</html>
